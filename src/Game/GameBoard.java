@@ -135,7 +135,6 @@ public class GameBoard {
 			}
 			index += 3;
 		}
-		index = 0;
 		if (buttonList[0].getText() == buttonList[4].getText() && buttonList[4].getText() == buttonList[8].getText()
 				&& buttonList[index].getText() != "-") { // 1st
 															// diagonal.
