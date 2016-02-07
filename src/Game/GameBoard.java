@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,7 +23,7 @@ public class GameBoard {
 	static int listElement, index, tieCount = 0;
 	static Font font = new Font("Comic Sans MS", Font.BOLD, 36);
 	static boolean turn = true;
-	//static boolean isPressed = false;
+	// static boolean isPressed = false;
 
 	public static void main(String[] args) {
 		startup();
@@ -38,6 +39,7 @@ public class GameBoard {
 		c.ipadx = 200;
 		c.ipady = 200;
 		c.insets = new Insets(10, 10, 10, 10);
+		myButton.setBackground(null);
 		panel.add(myButton, c);
 		button.setEnabled(true);
 		buttonList[listElement] = myButton;
@@ -60,8 +62,8 @@ public class GameBoard {
 					for (int i = 0; i < 9; i++) {
 						buttonList[i].setEnabled(false);
 					}
-						restart.setEnabled(true);
-					if (tieCount == -1) {
+					restart.setEnabled(true);
+					if (tieCount == -1 && isWinner() == false) {
 						label.setText("It's a tie!");
 					} else if (!turn) {
 						label.setText("Player 1 wins!");
@@ -104,7 +106,7 @@ public class GameBoard {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 3;
-		c.ipadx = 2-0;
+		c.ipadx = 2 - 0;
 		c.ipady = 200;
 		c.gridwidth = 1;
 		c.insets = new Insets(10, 10, 10, 10);
@@ -122,6 +124,9 @@ public class GameBoard {
 			if (buttonList[index].getText() == buttonList[index + 3].getText()
 					&& buttonList[index + 3].getText() == buttonList[index + 6].getText()
 					&& buttonList[index].getText() != "-") {
+				buttonList[index].setBackground(Color.RED);
+				buttonList[index + 3].setBackground(Color.RED);
+				buttonList[index + 6].setBackground(Color.RED);
 				return true;
 			}
 			index++;
@@ -131,24 +136,33 @@ public class GameBoard {
 			if (buttonList[index].getText() == buttonList[index + 1].getText()
 					&& buttonList[index + 1].getText() == buttonList[index + 2].getText()
 					&& buttonList[index].getText() != "-") {
+				buttonList[index].setBackground(Color.RED);
+				buttonList[index + 1].setBackground(Color.RED);
+				buttonList[index + 2].setBackground(Color.RED);
 				return true;
 			}
 			index += 3;
 		}
+		index = 0;
 		if (buttonList[0].getText() == buttonList[4].getText() && buttonList[4].getText() == buttonList[8].getText()
-				&& buttonList[index].getText() != "-") { // 1st
-															// diagonal.
+				&& buttonList[index].getText() != "-") {// 1st Diagonal
+			buttonList[0].setBackground(Color.RED);
+			buttonList[4].setBackground(Color.RED);
+			buttonList[8].setBackground(Color.RED);
 			return true;
 		}
 
 		if (buttonList[2].getText() == buttonList[4].getText() && buttonList[4].getText() == buttonList[6].getText()
-				&& buttonList[2].getText() != "-") { // 2nd
-			// diagonal.
+				&& buttonList[2].getText() != "-") { // 2nd Diagonal
+			buttonList[2].setBackground(Color.RED);
+			buttonList[4].setBackground(Color.RED);
+			buttonList[6].setBackground(Color.RED);
 			return true;
 		}
 		return false;
 	}
-	public static void startup(){
+
+	public static void startup() {
 		makeButton(topLeft, 0, 0);
 		makeButton(topMid, 0, 1);
 		makeButton(topRight, 0, 2);
