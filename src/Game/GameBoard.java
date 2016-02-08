@@ -19,8 +19,8 @@ public class GameBoard {
 	static Label label = new Label("Player 1's turn");
 	static GridBagConstraints c = new GridBagConstraints();
 	static JButton topLeft, topMid, topRight, midLeft, center, midRight, botLeft, botMid, botRight, restart;
-	static JButton[] buttonList = new JButton[9];
-	static int listElement, index, tieCount = 0;
+	static JButton[][] buttonList = new JButton[3][3];
+	static int index, tieCount = 0;
 	static Font font = new Font("Comic Sans MS", Font.BOLD, 36);
 	static boolean turn = true;
 
@@ -28,7 +28,7 @@ public class GameBoard {
 		startup(); // Makes(or re-makes) every component.
 	}
 
-	public static void makeButton(JButton button, int y, int x) { // Method for
+	public static void makeButton(JButton button, int y, int x) { // Method 
 																	// creating
 																	// game
 																	// squares.
@@ -45,8 +45,8 @@ public class GameBoard {
 		c.ipady = 200;
 		c.insets = new Insets(10, 10, 10, 10);
 		panel.add(myButton, c); // Adds the button to the panel.
-		buttonList[listElement] = myButton; // Adds the button to a list of the
-											// buttons.
+		buttonList[y][x] = myButton; // Adds the button to a list of the
+										// buttons.
 		myButton.addActionListener(new ActionListener() { // For when the button
 															// is pressed.
 			public void actionPerformed(ActionEvent e) {
@@ -65,9 +65,12 @@ public class GameBoard {
 				tieCount++; // When this reaches 9, it is set to -1 and the game
 							// is over.
 				if (isWinner() || tieCount == -1) { // When the game is over.
-					for (int i = 0; i < 9; i++) {
-						buttonList[i].setEnabled(false); // Disables every
-															// button.
+					for (JButton[] jRow : buttonList) {
+						for (JButton j : jRow) {
+							j.setEnabled(false);
+						}
+						// Disables every
+						// button.
 					}
 					restart.setEnabled(true); // Allows for a restart.
 					if (tieCount == -1 && isWinner() == false) { // For a tie.
@@ -81,7 +84,7 @@ public class GameBoard {
 			}
 		});
 		// System.out.println(listElement);
-		listElement++; // Controls where the button is added to the list.
+		// listElement++; // Controls where the button is added to the list.
 	}
 
 	public static void makeRestartButton() { // Creates the "restart" button.
@@ -102,7 +105,6 @@ public class GameBoard {
 				frame.remove(panel); // Deletes the now empty panel.
 				// Every variable is set to default.
 				turn = true;
-				listElement = 0;
 				index = 0;
 				tieCount = 0;
 
@@ -141,46 +143,53 @@ public class GameBoard {
 			tieCount = -1;
 		}
 		while (index < 3) { // Tests columns.
-			if (buttonList[index].getText() == buttonList[index + 3].getText()
-					&& buttonList[index + 3].getText() == buttonList[index + 6].getText()
-					&& buttonList[index].getText() != "-") {
-				buttonList[index].setBackground(Color.RED); // Makes the winning
-															// squares red.
-				buttonList[index + 3].setBackground(Color.RED);
-				buttonList[index + 6].setBackground(Color.RED);
+			if (buttonList[0][index].getText().equals(buttonList[1][index].getText())
+					&& buttonList[1][index].getText().equals(buttonList[2][index].getText())
+					&& !buttonList[2][index].getText().equals("-")) {
+				buttonList[0][index].setBackground(Color.RED); // Makes the
+																// winning
+																// squares red.
+				buttonList[1][index].setBackground(Color.RED);
+				buttonList[2][index].setBackground(Color.RED);
 				return true;
 			}
 			index++; // Tests next column.
 		}
 		index = 0;
-		while (index < 9) { // Tests rows.
-			if (buttonList[index].getText() == buttonList[index + 1].getText()
-					&& buttonList[index + 1].getText() == buttonList[index + 2].getText()
-					&& buttonList[index].getText() != "-") {
-				buttonList[index].setBackground(Color.RED); // Makes the winning
-															// squares red.
-				buttonList[index + 1].setBackground(Color.RED);
-				buttonList[index + 2].setBackground(Color.RED);
+		while (index < 3) { // Tests rows.
+			if (buttonList[index][0].getText().equals(buttonList[index][1].getText())
+					&& buttonList[index][1].getText().equals(buttonList[index][2].getText())
+					&& !buttonList[index][0].getText().equals("-")) {
+				buttonList[index][0].setBackground(Color.RED); // Makes the
+																// winning
+																// squares red.
+				buttonList[index][1].setBackground(Color.RED);
+				buttonList[index][2].setBackground(Color.RED);
 				return true;
 			}
-			index += 3; // Tests next row.
+			index++; // Tests next row.
 		}
 		index = 0;
-		if (buttonList[0].getText() == buttonList[4].getText() && buttonList[4].getText() == buttonList[8].getText()
-				&& buttonList[index].getText() != "-") {// 1st Diagonal
-			buttonList[0].setBackground(Color.RED); // Makes the winning squares
-													// red.
-			buttonList[4].setBackground(Color.RED);
-			buttonList[8].setBackground(Color.RED);
+		if (buttonList[0][0].getText().equals(buttonList[1][1].getText())
+				&& buttonList[1][1].getText().equals(buttonList[2][2].getText())
+				&& !buttonList[0][0].getText().equals("-")) {// 1st Diagonal
+			buttonList[0][0].setBackground(Color.RED); // Makes the winning
+														// squares
+														// red.
+			buttonList[1][1].setBackground(Color.RED);
+			buttonList[2][2].setBackground(Color.RED);
 			return true;
 		}
 
-		if (buttonList[2].getText() == buttonList[4].getText() && buttonList[4].getText() == buttonList[6].getText()
-				&& buttonList[2].getText() != "-") { // 2nd Diagonal
-			buttonList[2].setBackground(Color.RED); // Makes the winning squares
-													// red.
-			buttonList[4].setBackground(Color.RED);
-			buttonList[6].setBackground(Color.RED);
+		if (buttonList[0][2].getText().equals(buttonList[1][1].getText())
+				&& buttonList[1][1].getText().equals(buttonList[2][0].getText())
+				&& !buttonList[0][2].getText().equals("-")) { // 2nd
+																// Diagonal
+			buttonList[0][2].setBackground(Color.RED); // Makes the winning
+														// squares
+														// red.
+			buttonList[1][1].setBackground(Color.RED);
+			buttonList[2][0].setBackground(Color.RED);
 			return true;
 		}
 		return false;
